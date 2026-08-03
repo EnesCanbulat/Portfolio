@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Yeni Yetenek Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var kategoriler = ViewBag.Kategoriler as List<Portfolio.Models.Entities.yetenek_kategorileri>;
+}
+
+<div class="card shadow mb-4" style="max-width: 700px; margin: 0 auto;">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Yeni Yetenek Ekle</h6>
+    </div>
+    <div class="card-body">
+        @if (ViewBag.Hata != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Hata</div>
+        }
+
+        <form asp-area="Admin" asp-controller="Yetenek" asp-action="Ekle" method="post">
+
+            @if (kategoriler != null && kategoriler.Any())
+            {
+                <div class="mb-3">
+                    <label class="form-label font-weight-bold">Mevcut Kategorilerden Seçin</label>
+                    <select name="yetenek_kategorileri_id" class="form-control">
+                        <option value="">-- Kategori Seçiniz --</option>
+                        @foreach (var kat in kategoriler)
+                        {
+                            <option value="@kat.id">@kat.kategori</option>
+                        }
+                    </select>
+                </div>
+                <div class="text-center my-2 text-muted"><strong>VEYA</strong></div>
+            }
+
+            <div class="mb-3">
+                <label class="form-label font-weight-bold">Yeni Kategori Adı Girin</label>
+                <input type="text" name="yeniKategoriAd" class="form-control" placeholder="Örn: Frontend, Backend, Veritabanı" />
+                <small class="form-text text-muted">Açılır listede istediğiniz kategori yoksa veya liste boşsa buraya yeni kategori adı yazabilirsiniz.</small>
+            </div>
+
+            <hr class="my-4" />
+
+            <div class="mb-3">
+                <label class="form-label font-weight-bold">Yetenek Adı</label>
+                <input type="text" name="yetenek" class="form-control" placeholder="Örn: C#, React, PostgreSQL" required />
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="/Admin/Yetenek/Yetenekler" class="btn btn-secondary">İptal</a>
+                <button type="submit" class="btn btn-success px-4">Yeteneği Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>

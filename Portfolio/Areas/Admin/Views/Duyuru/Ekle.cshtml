@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Yeni Duyuru Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card shadow mb-4" style="max-width: 700px; margin: 0 auto;">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Yeni Duyuru Ekle</h6>
+    </div>
+    <div class="card-body">
+
+        @if (ViewBag.Hata != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Hata</div>
+        }
+
+        <form method="post" asp-area="Admin" asp-controller="Duyuru" asp-action="Ekle">
+            <div class="mb-3">
+                <label class="form-label">Duyuru Başlığı</label>
+                <input type="text" name="baslik" class="form-control" placeholder="Örn: Yeni Projem Yayında!" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Kategori</label>
+                <select name="kategori" class="form-control" required>
+                    <option value="Önemli">Önemli</option>
+                    <option value="Yeni Proje">Yeni Proje</option>
+                    <option value="Bilgi">Bilgi</option>
+                    <option value="Genel">Genel</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Duyuru İçeriği</label>
+                <textarea name="icerik" class="form-control" rows="5" placeholder="Duyuru detaylarını buraya yazın..." required></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a asp-area="Admin" asp-controller="Duyuru" asp-action="Duyurular" class="btn btn-secondary">İptal</a>
+                <button type="submit" class="btn btn-success px-4">Kaydet ve Yayınla</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Portfolio</title>
+
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    
+    <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="~/assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="~/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="~/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+
+    
+    <link href="~/assets/css/main.css" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+
+   
+    <header id="header" class="header dark-background d-flex flex-column">
+        <i class="header-toggle d-xl-none bi bi-list"></i>
+
+        <div class="profile-img">
+            <img src="~/assets/img/my-profile-img.jpeg" alt="Profil Resmi" class="img-fluid rounded-circle">
+        </div>
+
+        <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center justify-content-center">
+            <h1 class="sitename">@(ViewBag.AdSoyad ?? "Portfolio")</h1>
+        </a>
+
+        <div class="social-links text-center">
+            @if (ViewBag.SosyalLinkler != null)
+            {
+                @foreach (var link in (List<Portfolio.Models.Entities.kullanici_linkleri>)ViewBag.SosyalLinkler)
+                {
+                    var iconClass = link.baslik?.ToLower() switch
+                    {
+                        "github" => "bi bi-github",
+                        "linkedin" => "bi bi-linkedin",
+                        "instagram" => "bi bi-instagram",
+                        "twitter" => "bi bi-twitter-x",
+                        "facebook" => "bi bi-facebook",
+                        "youtube" => "bi bi-youtube",
+                        _ => "bi bi-link-45deg"
+                    };
+                    <a href="@link.url" target="_blank" title="@link.baslik"><i class="@iconClass"></i></a>
+                }
+            }
+        </div>
+
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="#hero" class="active"><i class="bi bi-house navicon"></i>Ana Sayfa</a></li>
+                <li><a href="#hakkimda"><i class="bi bi-person navicon"></i>Hakkımda</a></li>
+                <li><a href="#duyurular"><i class="bi bi-megaphone navicon"></i>Duyurular</a></li>
+                <li><a href="#yetenekler"><i class="bi bi-gear navicon"></i>Yetenekler</a></li>
+                <li><a href="#projeler"><i class="bi bi-images navicon"></i>Projeler</a></li>
+                <li><a href="#iletisim"><i class="bi bi-envelope navicon"></i>İletişim</a></li>
+                <li><a asp-area="Admin" asp-controller="Account" asp-action="Login"><i class="bi bi-key navicon"></i>Giriş Yap</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <main class="main">
+        @RenderBody()
+    </main>
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendor/aos/aos.js"></script>
+    <script src="~/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="~/assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="~/assets/js/main.js"></script>
+    <script src="~/js/site.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,57 @@
+@model List<Portfolio.Models.Entities.projeler>
+
+@{
+    ViewData["Title"] = "Projelerim";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Projelerim</h1>
+    <a href="/Admin/Proje/Ekle" class="btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Yeni Proje Ekle
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tüm Projeler Listesi</h6>
+    </div>
+    <div class="card-body">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Proje Adı</th>
+                            <th>Açıklama</th>
+                            <th style="width: 120px;">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var proje in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">@proje.proje</td>
+                                <td>@proje.aciklama</td>
+                                <td>
+                                    <form asp-area="Admin" asp-controller="Proje" asp-action="Sil" asp-route-id="@proje.id" method="post" class="d-inline" onsubmit="return confirm('Bu projeyi silmek istediğinize emin misiniz?');">
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Sil">
+                                            <i class="fas fa-trash"></i> Sil
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">
+                Henüz veritabanında kayıtlı bir proje bulunmamaktadır.
+            </div>
+        }
+    </div>
+</div>

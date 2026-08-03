@@ -1,0 +1,74 @@
+@model Portfolio.Models.Entities.kullanici
+
+@{
+    ViewData["Title"] = "Admin Paneli";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Hoş Geldiniz, @Model?.isim @Model?.soyisim</h1>
+    <a href="/" target="_blank" class="btn btn-sm btn-outline-primary shadow-sm">
+        Canlı Sitemi Göster
+    </a>
+</div>
+
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">
+            Gelen Müşteri Teklifleri & Mesajlar
+        </h6>
+    </div>
+    <div class="card-body">
+        @if (Model?.teklifler != null && Model.teklifler.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Şirket / Gönderen</th>
+                            <th>E-Posta Adresi</th>
+                            <th>Önerilen Bütçe</th>
+                            <th>Teklif / Mesaj Detayı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var teklif in Model.teklifler.OrderByDescending(t => t.olusturulma_tarihi))
+                        {
+                            <tr>
+                                <td style="white-space: nowrap;">
+                                    <small class="text-muted">@teklif.olusturulma_tarihi.ToString("dd.MM.yyyy HH:mm")</small>
+                                </td>
+                                <td class="font-weight-bold text-primary">
+                                    @teklif.sirket
+                                </td>
+                                <td>
+                                    <a href="mailto:@teklif.eposta">@teklif.eposta</a>
+                                </td>
+                                <td>
+                                    @if (teklif.ucret.HasValue && teklif.ucret > 0)
+                                    {
+                                        <span class="badge bg-success text-white p-2">@teklif.ucret.Value.ToString("N0") ₺</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary text-white p-2">Belirtilmedi</span>
+                                    }
+                                </td>
+                                <td>@teklif.mesaj</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info text-center my-3">
+                Henüz siteniz üzerinden bir teklif veya mesaj gönderilmemiştir.
+            </div>
+        }
+    </div>
+</div>

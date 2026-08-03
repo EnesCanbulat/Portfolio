@@ -1,0 +1,60 @@
+@model List<Portfolio.Models.Entities.yetenek_kategorileri>
+
+@{
+    ViewData["Title"] = "Yeteneklerim";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Yeteneklerim</h1>
+    <a href="/Admin/Yetenek/Ekle" class="btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Yeni Yetenek Ekle
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tüm Yetenekler Listesi (Kategorili)</h6>
+    </div>
+    <div class="card-body">
+        @if (Model != null && Model.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Yetenek Adı</th>
+                            <th style="width: 120px;">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kat in Model)
+                        {
+                            @foreach (var yetenek in kat.yetenekler)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-primary text-white p-2">@kat.kategori</span></td>
+                                    <td class="fw-bold">@yetenek.yetenek</td>
+                                    <td>
+                                        <form asp-area="Admin" asp-controller="Yetenek" asp-action="Sil" asp-route-id="@yetenek.id" method="post" class="d-inline" onsubmit="return confirm('Bu yeteneği silmek istediğinize emin misiniz?');">
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Sil">
+                                                <i class="fas fa-trash"></i> Sil
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">
+                Henüz veritabanında kayıtlı bir yetenek bulunmamaktadır.
+            </div>
+        }
+    </div>
+</div>

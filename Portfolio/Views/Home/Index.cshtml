@@ -1,0 +1,257 @@
+@model Portfolio.Models.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+
+<section id="hero" class="hero section dark-background">
+    <img src="~/assets/img/hero-bg.jpeg" alt="" data-aos="fade-in">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <h2>@Model.kullanici?.isim @Model.kullanici?.soyisim</h2>
+        <p>@Model.kullanici?.unvan</p>
+    </div>
+</section>
+
+
+<section id="hakkimda" class="about section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Hakkımda</h2>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4 justify-content-center">
+            <div class="col-lg-4">
+                @if (!string.IsNullOrEmpty(Model.kullanici?.foto_url))
+                {
+                    <img src="~/@Model.kullanici.foto_url" class="img-fluid" alt="@Model.kullanici?.isim">
+                }
+                else
+                {
+                    <img src="~/assets/img/my-profile-img.jpeg" class="img-fluid" alt="">
+                }
+            </div>
+            <div class="col-lg-8 content">
+                <h2>@Model.kullanici?.unvan</h2>
+
+                <p class="py-3">
+                    <i class="bi bi-chevron-right"></i>
+                    <strong>Durum:</strong>
+                    <span>@Model.kullanici?.durum</span>
+                </p>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <ul>
+                            <li><i class="bi bi-chevron-right"></i> <strong>İsim:</strong> <span>@Model.kullanici?.isim @Model.kullanici?.soyisim</span></li>
+                            <li><i class="bi bi-chevron-right"></i> <strong>E-posta:</strong> <span>@Model.kullanici?.iletisim</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <ul>
+                            @if (!string.IsNullOrEmpty(Model.kullanici?.telefonno))
+                            {
+                                <li><i class="bi bi-chevron-right"></i> <strong>Telefon:</strong> <span>@Model.kullanici.telefonno</span></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.kullanici?.hakkimda))
+                {
+                    <p class="fst-italic py-3">
+                        @Model.kullanici.hakkimda
+                    </p>
+                }
+
+                <div class="mt-3">
+                    <a class="btn btn-primary" href="mailto:@Model.kullanici?.iletisim">
+                        <i class="bi bi-envelope"></i> İletişime Geç
+                    </a>
+                    @if (!string.IsNullOrEmpty(Model.kullanici?.cv))
+                    {
+                        <a class="btn btn-outline-secondary ms-2" href="~/@Model.kullanici.cv" target="_blank">
+                            <i class="bi bi-download"></i> CV İndir
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@if (Model.duyurular != null && Model.duyurular.Any())
+{
+    <section id="duyurular" class="section light-background">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Duyurular & Güncellemeler</h2>
+        </div>
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-3">
+                @foreach (var duyuru in Model.duyurular)
+                {
+                    var borderClass = duyuru.kategori?.ToLower() switch
+                    {
+                        "önemli" => "border-danger",
+                        "yeni proje" => "border-success",
+                        "bilgi" => "border-info",
+                        _ => "border-secondary"
+                    };
+                    var badgeClass = duyuru.kategori?.ToLower() switch
+                    {
+                        "önemli" => "bg-danger",
+                        "yeni proje" => "bg-success",
+                        "bilgi" => "bg-info",
+                        _ => "bg-secondary"
+                    };
+                    <div class="col-lg-6">
+                        <div class="card border-start border-4 @borderClass">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge @badgeClass">@duyuru.kategori</span>
+                                    <small class="text-muted">@duyuru.gonderitarihi.ToString("dd MMMM yyyy")</small>
+                                </div>
+                                <h6 class="fw-semibold">@duyuru.baslik</h6>
+                                <p class="mb-0 small text-secondary">@duyuru.icerik</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section id="duyurular" class="section light-background">
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Duyurular</h2>
+            <p class="text-muted">Henüz duyuru bulunmamaktadır.</p>
+        </div>
+    </section>
+}
+
+
+<section id="yetenekler" class="skills section light-background">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Yetenekler</h2>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        @if (Model.yetenek_kategorileri != null)
+        {
+            @foreach (var kategori in Model.yetenek_kategorileri)
+            {
+                <div class="mb-4">
+                    <h5 class="fw-bold text-primary mb-3">@kategori.kategori</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach (var yetenek in kategori.yetenekler)
+                        {
+                            <span class="badge bg-dark fs-6 fw-normal px-3 py-2">@yetenek.yetenek</span>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+
+<section id="projeler" class="portfolio section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Projelerim</h2>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        @if (Model.projeler != null && Model.projeler.Any())
+        {
+            <div class="row gy-4">
+                @foreach (var proje in Model.projeler)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">
+                                    <i class="bi bi-folder2-open text-primary me-2"></i>@proje.proje
+                                </h5>
+                                <p class="card-text text-secondary">@proje.aciklama</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Henüz proje eklenmemiş.</p>
+        }
+    </div>
+</section>
+
+
+<section id="iletisim" class="contact section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>İletişim</h2>
+        <p>Bana teklif yapmak ister misin? Formu doldur, sana dönerim.</p>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+           
+            <div class="col-lg-5">
+                <div class="info-wrap">
+                    @if (!string.IsNullOrEmpty(Model.kullanici?.iletisim))
+                    {
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="200">
+                            <i class="bi bi-envelope flex-shrink-0"></i>
+                            <div>
+                                <h3>E-Posta</h3>
+                                <p>@Model.kullanici.iletisim</p>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.kullanici?.telefonno))
+                    {
+                        <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+                            <i class="bi bi-telephone flex-shrink-0"></i>
+                            <div>
+                                <h3>Telefon</h3>
+                                <p>@Model.kullanici.telefonno</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            
+            <div class="col-lg-7">
+                @if (TempData["FormMesaji"] != null)
+                {
+                    <div class="alert alert-success" data-aos="fade-up">
+                        <i class="bi bi-check-circle me-2"></i>@TempData["FormMesaji"]
+                    </div>
+                }
+
+                <form id="iletisimFormu" method="post" asp-action="TeklifGonder" asp-controller="Home" data-aos="fade-up" data-aos-delay="200">
+                    <div class="row gy-4">
+                        <div class="col-md-6">
+                            <input type="text" id="sirket" name="sirket" class="form-control" placeholder="Şirket İsmi" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="email" id="eposta" name="eposta" class="form-control" placeholder="E-Posta Adresiniz" required>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="number" id="ucret" name="ucret" class="form-control" placeholder="Teklif Edilen Ücret (opsiyonel)">
+                        </div>
+                        <div class="col-md-12">
+                            <textarea id="mesaj" name="mesaj" class="form-control" rows="6" placeholder="Mesajınız / Pozisyon Hakkında Bilgi" required></textarea>
+                        </div>
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary px-5 py-2">Teklif Gönder</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
