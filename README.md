@@ -30,8 +30,19 @@ Bu proje, **ASP.NET Core 10 MVC** mimarisi ve **PostgreSQL** veritabanı kullan�
 
 ---
 
-### Yerelde Çalıştırma
+### 🚀 Projeyi Çalıştırma Yöntemleri
 
+#### **Yöntem 1: Docker Compose İle Çalıştırma (TAVSİYE EDİLEN 🏆)**
+Web uygulamasını ve PostgreSQL veritabanını hiçbir ek kuruluma ihtiyaç duymadan tek bir komutla otomatik kurup çalıştırmak için:
+
+```bash
+docker compose up --build
+```
+> **Açıklama:** Bu komut çalıştırıldığında PostgreSQL veritabanı ve web uygulaması konteyner içinde otomatik başlatılır. Veritabanı tabloları ve CV verileriniz otomatik yüklenir. Sitenize `http://localhost:8080` adresinden erişebilirsiniz.
+
+---
+
+#### **Yöntem 2: .NET CLI İle Çalıştırma (Yerelde PostgreSQL Kuruluysa)**
 ```bash
 # 1. Projeyi klonlayın
 git clone https://github.com/EnesCanbulat/Portfolio.git
@@ -42,21 +53,4 @@ cd Portfolio/Portfolio
 # 3. Bağımlılıkları yükleyin ve çalıştırın
 dotnet restore
 dotnet run
-```
-
-#### Docker Compose İle Çalıştırma (Web Uygulaması + PostgreSQL Veritabanı)
-
-```bash
-# Web uygulamasını ve PostgreSQL veritabanını tek komutla derleyip çalıştırın
-docker compose up --build
-```
-
-#### Tekli Docker Container İle Çalıştırma
-
-```bash
-# 1. Docker imajını derleyin
-docker build -t portfolio-app .
-
-# 2. Konteyneri çalıştırın
-docker run -p 8080:8080 portfolio-app
 ```
