@@ -9,6 +9,8 @@ namespace Portfolio.Database
         {
             // Kullanıcı Bilgileri
             var adminUser = context.kullanici.FirstOrDefault();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword("123456");
+
             if (adminUser == null)
             {
                 adminUser = new kullanici
@@ -22,7 +24,7 @@ namespace Portfolio.Database
                     foto_url = "assets/img/hero-bg.jpeg",
                     telefonno = "+90 507 099 28 98",
                     kullanici_adi = "admin",
-                    sifre = "123456"
+                    sifre = hashedPassword
                 };
 
                 context.kullanici.Add(adminUser);
@@ -32,7 +34,11 @@ namespace Portfolio.Database
             {
                 bool guncellendi = false;
                 if (string.IsNullOrEmpty(adminUser.kullanici_adi)) { adminUser.kullanici_adi = "admin"; guncellendi = true; }
-                if (string.IsNullOrEmpty(adminUser.sifre)) { adminUser.sifre = "123456"; guncellendi = true; }
+                if (string.IsNullOrEmpty(adminUser.sifre) || adminUser.sifre == "123456")
+                {
+                    adminUser.sifre = hashedPassword;
+                    guncellendi = true;
+                }
                 if (guncellendi) context.SaveChanges();
             }
 
