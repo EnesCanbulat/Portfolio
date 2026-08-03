@@ -26,7 +26,7 @@ Bu proje, **ASP.NET Core 10 MVC** mimarisi ve **PostgreSQL** veritabanı kullan�
 - **Backend:** C#, ASP.NET Core 10.0 (MVC Framework)
 - **Veritabanı:** PostgreSQL, Entity Framework Core
 - **Frontend & Tema:** HTML5, CSS3, JavaScript, SB Admin 2 (Bootstrap)
-- **Konteynerleştirme:** Docker & Dockerfile (Multi-stage build)
+- **Konteynerleştirme:** Docker & Docker Compose (Multi-stage build)
 
 ---
 
@@ -44,7 +44,14 @@ dotnet restore
 dotnet run
 ```
 
-#### Docker İle Çalıştırma
+#### Docker Compose İle Çalıştırma (Web Uygulaması + PostgreSQL Veritabanı)
+
+```bash
+# Web uygulamasını ve PostgreSQL veritabanını tek komutla derleyip çalıştırın
+docker compose up --build
+```
+
+#### Tekli Docker Container İle Çalıştırma
 
 ```bash
 # 1. Docker imajını derleyin
