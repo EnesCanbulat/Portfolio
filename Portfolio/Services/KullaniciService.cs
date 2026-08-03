@@ -54,7 +54,20 @@ namespace Portfolio.Services
             var kullanici = _context.kullanici.FirstOrDefault(k => k.kullanici_adi == kullanici_adi);
             if (kullanici == null) return null;
 
-            return BCrypt.Net.BCrypt.Verify(sifre, kullanici.sifre) ? kullanici : null;
+            
+            if (kullanici.sifre == sifre) return kullanici;
+
+          
+            try
+            {
+                if (BCrypt.Net.BCrypt.Verify(sifre, kullanici.sifre)) return kullanici;
+            }
+            catch
+            {
+                
+            }
+
+            return null;
         }
 
         public bool DuyuruEkle(string baslik, string kategori, string icerik)
